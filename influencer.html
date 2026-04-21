@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mi Influencer Virtual</title>
+    <style>
+        body { margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        #info {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0,0,0,0.6);
+            padding: 10px 15px;
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: 10;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="info">
+        ✨ Tu influencer está aquí | Arrastra para girar la cámara
+    </div>
+
+    <!-- Importamos los módulos necesarios usando Import Maps -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/",
+                "@pixiv/three-vrm": "https://cdn.jsdelivr.net/npm/@pixiv/three-vrm@3.4.0/lib/three-vrm.module.min.js"
+            }
+        }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+        import { VRMLoaderPlugin } from '@pixiv/three-vrm';
+
+        // --- 1. Configuración básica de la escena ---
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x1a1a2e); // Fondo elegante
+
+        // --- 2. Cámara ---
+        // Posicionamos la cámara para ver al personaje bien
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 1.2, 2.5);
+        camera.lookAt(0, 1.2, 0);
+
+        // --- 3. Renderizador ---
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        // --- 4. Controles para interactuar con la cámara (¡Importante!)---
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.target.set(0, 1.2, 0);
+        controls.enableDamping = true; // Suavidad
+        controls.dampingFactor = 0.05;
+        controls.autoRotate = false;
+        controls.enableZoom = true;
+
+        // --- 5. Luces (Esencial para que no se vea oscuro) ---
+        // Luz ambiental suave
+        const ambientLight = new THREE.AmbientLight(0x404060);
+        scene.add(ambientLight);
+        
+        // Luz direccional principal
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        dirLight.position.set(1, 2, 1);
+        scene.add(dirLight);
+        
+        // Luz de relleno trasera
+        const backLight = new THREE.DirectionalLight(0x88aaff, 0.5);
+        backLight.position.set(-0.5, 1, -1);
+        scene.add(backLight);
+        
+        // Luz suave desde abajo
+        const fillLight = new THREE.PointLight(0xccaa88, 0.3);
+        fillLight.position.set(0, -1, 0);
+        scene.add(fillLight);
+
+        // --- 6. Cargar el modelo VRM (¡Aquí pones tu URL!) ---
+        const loader = new GLTFLoader();
+        // Registramos el plugin de VRM
+        loader.register((parser) => {
+            return new VRMLoaderPlugin(parser);
+        });
+
+        // 🔽🔽🔽 **CAMBIA ESTA URL POR LA DE TU ARCHIVO .VRM** 🔽🔽🔽
+        const vrmUrl = 'https://github.com/rclaver/influencer/blob/master/Sekhmet.vrm';
+        
+        let vrmModel; // Guardaremos el modelo aquí
+
+        loader.load(
+            vrmUrl,
+            (gltf) => {
+                // El modelo VRM está en gltf.userData.vrm
+                const vrm = gltf.userData.vrm;
+                vrmModel = vrm;
+                scene.add(vrm.scene);
+                
+                console.log('✅ Influencer cargado con éxito!');
+                
+                // Pequeño ajuste para que el personaje mire al frente por defecto
+                if (vrm.lookAt) {
+                    vrm.lookAt.target = camera;
+                }
+            },
+            (progress) => {
+                // Mostrar progreso de carga en consola
+                console.log(`Cargando: ${Math.round(progress.loaded / progress.total * 100)}%`);
+            },
+            (error) => {
+                console.error('❌ Error al cargar el VRM:', error);
+                document.getElementById('info').innerHTML = '⚠️ Error al cargar el influencer. Revisa la URL del archivo .vrm';
+            }
+        );
+
+        // --- 7. Animación (Bucle de renderizado) ---
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            // Actualizar la mirada del personaje si existe y está activa
+            if (vrmModel && vrmModel.lookAt) {
+                // Hace que el personaje mire hacia la cámara
+                vrmModel.lookAt.target = camera;
+            }
+            
+            // Actualizar controles
+            controls.update();
+            
+            // Renderizar la escena
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+
+        // --- 8. Ajuste responsive para el tamaño de ventana ---
+        window.addEventListener('resize', onWindowResize, false);
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+    </script>
+</body>
+</html>
