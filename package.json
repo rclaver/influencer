@@ -1,0 +1,27 @@
+{
+  "name": "influencer",
+  "version": "1.0.0",
+  "description": "Creació d'un avatar base d'un influencer",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rclaver/influencer.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rclaver/influencer/issues"
+  },
+  "homepage": "https://github.com/rclaver/influencer#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "openai": "^6.34.0"
+  }
+}

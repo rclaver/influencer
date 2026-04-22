@@ -1,0 +1,22 @@
+tu-proyecto/
+├── server.js          (el backend)
+├── package.json       (dependencias)
+├── public/
+│   └── index.html     (tu código HTML modificado)
+└── .env               (variables de entorno - NO subir a GitHub)
+
+https://platform.openai.com/account/api-keys
+
+1.0 Instalar node
+   $ sudo apt install npm
+   $ node --version -> v20.20.2
+   $ npm --version -> 10.8.2
+
+1.1 Crear package.json
+   $ npm init -y
+
+1.2 Instalar dependencias
+   $ npm install express cors dotenv openai
+
+1.3 Iniciar el servidor:
+   $ node server.js
