@@ -69,17 +69,17 @@
         // Luz ambiental suave
         const ambientLight = new THREE.AmbientLight(0x404060);
         scene.add(ambientLight);
-        
+
         // Luz direccional principal
         const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
         dirLight.position.set(1, 2, 1);
         scene.add(dirLight);
-        
+
         // Luz de relleno trasera
         const backLight = new THREE.DirectionalLight(0x88aaff, 0.5);
         backLight.position.set(-0.5, 1, -1);
         scene.add(backLight);
-        
+
         // Luz suave desde abajo
         const fillLight = new THREE.PointLight(0xccaa88, 0.3);
         fillLight.position.set(0, -1, 0);
@@ -93,8 +93,9 @@
         });
 
         // 🔽🔽🔽 **CAMBIA ESTA URL POR LA DE TU ARCHIVO .VRM** 🔽🔽🔽
-        const vrmUrl = 'https://github.com/rclaver/influencer/blob/master/Sekhmet.vrm';
-        
+        //const vrmUrl = 'https://github.com/rclaver/influencer/Sekhmet.vrm';
+        const vrmUrl = 'https://raw.githubusercontent.com/rclaver/influencer/master/Sekhmet.vrm';
+
         let vrmModel; // Guardaremos el modelo aquí
 
         loader.load(
@@ -104,9 +105,9 @@
                 const vrm = gltf.userData.vrm;
                 vrmModel = vrm;
                 scene.add(vrm.scene);
-                
+
                 console.log('✅ Influencer cargado con éxito!');
-                
+
                 // Pequeño ajuste para que el personaje mire al frente por defecto
                 if (vrm.lookAt) {
                     vrm.lookAt.target = camera;
@@ -125,20 +126,20 @@
         // --- 7. Animación (Bucle de renderizado) ---
         function animate() {
             requestAnimationFrame(animate);
-            
+
             // Actualizar la mirada del personaje si existe y está activa
             if (vrmModel && vrmModel.lookAt) {
                 // Hace que el personaje mire hacia la cámara
                 vrmModel.lookAt.target = camera;
             }
-            
+
             // Actualizar controles
             controls.update();
-            
+
             // Renderizar la escena
             renderer.render(scene, camera);
         }
-        
+
         animate();
 
         // --- 8. Ajuste responsive para el tamaño de ventana ---
