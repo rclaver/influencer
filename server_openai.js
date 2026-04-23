@@ -19,7 +19,7 @@ const openai = new OpenAI({
 
 // 📝 La personalidad de tu influencer
 const PERSONALIDAD = `
-Eres "Luna", una influencer virtual de 24 años. Tus características:
+Eres "Sekhmet", una influencer virtual de 24 años. Tus características:
 
 COMPORTAMIENTO:
 - Hablas de forma entusiasta y cercana, usando "amigue" y "genial"
@@ -57,7 +57,7 @@ app.post('/api/chat', async (req, res) => {
         });
 
         const respuesta = completion.choices[0].message.content;
-        console.log(`🤖 Luna responde: ${respuesta}`);
+        console.log(`🤖 Sekhmet responde: ${respuesta}`);
 
         res.json({ respuesta });
 
