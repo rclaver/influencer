@@ -125,7 +125,7 @@
         </div>
     </div>
 
-    <!-- Importación de módulos (igual que antes) -->
+    <!-- Importación de módulos -->
     <script type="importmap">
         {
             "imports": {
@@ -171,8 +171,7 @@
         const loader = new GLTFLoader();
         loader.register((parser) => new VRMLoaderPlugin(parser));
 
-        // 🔽 CAMBIA ESTA URL POR LA TUYA 🔽
-        const vrmUrl = 'https://raw.githubusercontent.com/TU_USUARIO/TU_REPO/main/tu_influencer.vrm';
+        const vrmUrl = 'https://raw.githubusercontent.com/rclaver/influencer/master/Sekhmet.vrm';
         let vrmModel;
 
         loader.load(vrmUrl, (gltf) => {

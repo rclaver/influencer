@@ -1,9 +1,8 @@
-// Versión CommonJS
-// se ejecuta mediante LocalAI
+// versión CommonJS para LocalAI
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
-const OpenAI = require('openai');
+const {OpenAI} = require('openai');
 
 const app = express();
 const port = 3000;
@@ -13,22 +12,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-const openai = new OpenAI({
-    apiKey: 'sk-no-key-required',
+const localai = new OpenAI({
+    apiKey: 'sk-local', // No importa
     baseURL: 'http://localhost:8080/v1'
-});
-
-const OPENAI_URL = 'http://localhost:8080/v1';
-
-// Inicializar OpenAI
-const completion = await openai.chat.completions.create({
-    model: "tinyllama", // o "phi2" o "llama2-7b"
-    messages: [
-       { role: "system", content: PERSONALIDAD },
-       { role: "user", content: mensajeUsuario }
-    ],
-    max_tokens: 150,
-    temperature: 0.8
 });
 
 // 📝 La personalidad de tu influencer
@@ -36,7 +22,7 @@ const PERSONALIDAD = `
 Eres "Sekhmet", una influencer virtual de 24 años. Tus características:
 
 COMPORTAMIENTO:
-- Hablas de forma entusiasta y cercana, usando "amigue" y "genial"
+- Hablas de forma entusiasta y cercana, usando "compañera" y "a por todas"
 - Gestículas mucho (aunque solo hablas, tú animarás después)
 - Te ríes de tus propios chistes malos
 
@@ -55,30 +41,41 @@ Responde de forma breve (máximo 2 frases) y natural, como si hablaras en un dir
 
 // Endpoint para el chat
 app.post('/api/chat', async (req, res) => {
-    try {
-        const { mensajeUsuario } = req.body;
+   try {
+      const { mensajeUsuario } = req.body;
+      console.log(`💬 Usuario dice: ${mensajeUsuario}`);
 
-        console.log(`💬 Usuario dice: ${mensajeUsuario}`);
-
-        const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo",
+      // Formato específico para TinyLlama
+      const promptFormateado = `<|system|>
+            ${PERSONALIDAD}
+            <|user|>
+            ${mensajeUsuario}
+            <|assistant|>`
+      ;
+      const completion = await localai.chat.completions.create({
+            model: "tinyllama",
             messages: [
                 { role: "system", content: PERSONALIDAD },
                 { role: "user", content: mensajeUsuario }
             ],
-            max_tokens: 150,
-            temperature: 0.8,
-        });
+            max_tokens: 100,
+            temperature: 0.7,
+            stop: ["<|user|>", "<|system|>"]
+      });
 
-        const respuesta = completion.choices[0].message.content;
-        console.log(`🤖 Sekhmet responde: ${respuesta}`);
+      let respuesta = completion.choices[0].message.content;
+      respuesta = respuesta
+         .split('\n')[0]             // solo la primera línea
+         .replace(/<\|.*?\|>/g, '')  // eliminar etiquetas especiales
+         .trim();
 
-        res.json({ respuesta });
+      console.log(`🤖 Sekhmet responde: ${respuesta}`);
+      res.json({ respuesta });
 
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ error: 'Algo salió mal' });
-    }
+   }catch (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Algo salió mal' });
+   }
 });
 
 app.listen(port, () => {
