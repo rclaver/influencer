@@ -7,16 +7,24 @@ tu-proyecto/
 
 https://platform.openai.com/account/api-keys
 
-1.0 Instalar node
+preparació:
+----------
+0.0 Instalar node
    $ sudo apt install npm
    $ node --version -> v20.20.2
    $ npm --version -> 10.8.2
 
-1.1 Crear package.json
+0.1 Crear package.json
    $ npm init -y
 
-1.2 Instalar dependencias
+0.2 Instalar dependencias
    $ npm install express cors dotenv openai
 
-1.3 Iniciar el servidor:
+execució
+--------
+1.1 Iniciar la instància docker amb els serviror del model
+   $ run-localai.sh
+   // docker run -p 8080:8080 -it --name local-ai -v /media/rafael/dades/localai-models:/build/models localai/localai:latest-cpu
+
+1.2 Iniciar el backend:
    $ node server.js

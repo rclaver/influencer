@@ -16,6 +16,7 @@ const localai = new OpenAI({
     apiKey: 'sk-local', // No importa
     baseURL: 'http://localhost:8080/v1'
 });
+const MODEL = "llama2-7b"
 
 // 📝 La personalidad de tu influencer
 const PERSONALIDAD = `
@@ -53,7 +54,7 @@ app.post('/api/chat', async (req, res) => {
       console.log(`💬 Usuario dice: ${mensajeUsuario}`);
 
       const completion = await localai.chat.completions.create({
-            model: "phi2",
+            model: MODEL,
             messages: [
                 { role: "system", content: PERSONALIDAD },
                 { role: "user", content: mensajeUsuario }
@@ -80,5 +81,5 @@ app.post('/api/chat', async (req, res) => {
 
 app.listen(port, () => {
     console.log(`🚀 Servidor corriendo en http://localhost:${port}`);
-    console.log(`🤖 Usando LocalAI con modelo phi2`);
+    console.log(`🤖 Usando LocalAI con modelo ${MODEL}`);
 });

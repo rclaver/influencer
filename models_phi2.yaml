@@ -1,0 +1,5 @@
+name: phi2
+parameters:
+   model: phi-2.Q4_K_M.gguf
+context_size: 2048
+f16: true
