@@ -355,6 +355,7 @@
 
         console.log("✅ Postura natural aplicada.");
     }
+
     // Función de interpolación suave (ease in-out)
     function easeInOutCubic(t) {
         return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -366,7 +367,7 @@
 
         const gestos = {
             'saludo': {
-                duracion: 800,
+                duracion: 5800,
                 animacion: (progress) => {
                     const rightArm = findBoneByName(vrm, "J_Bip_R_UpperArm");
                     if (rightArm) {
@@ -384,7 +385,7 @@
                 }
             },
             'afirmacion': {
-                duracion: 500,
+                duracion: 5500,
                 animacion: (progress) => {
                     const head = findBoneByName(vrm, "J_Bip_C_Head");
                     if (head) {
@@ -398,7 +399,7 @@
                 }
             },
             'negacion': {
-                duracion: 600,
+                duracion: 5600,
                 animacion: (progress) => {
                     const head = findBoneByName(vrm, "J_Bip_C_Head");
                     if (head) {
@@ -412,7 +413,7 @@
                 }
             },
             'animada': {
-                duracion: 1000,
+                duracion: 51000,
                 animacion: (progress) => {
                     const rightArm = findBoneByName(vrm, "J_Bip_R_UpperArm");
                     const leftArm = findBoneByName(vrm, "J_Bip_L_UpperArm");
@@ -499,10 +500,9 @@
 
     // Integrar con las respuestas de Sekhmet
     function gestualizarRespuesta(texto, vrm) {
-        console.log('gestualizarRespuesta',texto)
-        if (!vrm) return;
+       if (!vrm) return;
 
-        const t = texto.toLowerCase();
+       const t = texto.toLowerCase();
 
        if (t.includes('hola') || t.includes('saludo') || t.includes('buenos días')) {
            ejecutarGestoSuave(vrm, 'saludo');
@@ -526,22 +526,22 @@
        'saludo': {
            duracion: 800,
            secuencia: [
-             { bones: ['rightUpperArm', 'J_Bip_R_UpperArm', 'rightArm', 'arm', 'rightShoulder'], rotation: { x: 0, y: -0.5, z: 0.3 }, tiempo: 0 },
-             { bones: ['rightLowerArm', 'J_Bip_R_LowerArm', 'rightForeArm', 'forearm'], rotation: { x: -0.5, y: 0, z: 0 }, tiempo: 100 },
-             { bones: ['rightUpperArm', 'J_Bip_R_UpperArm', 'rightArm', 'arm', 'rightShoulder'], rotation: { x: 0, y: 0.5, z: -0.2 }, tiempo: 400 },
-             { bones: ['rightUpperArm', 'J_Bip_R_UpperArm', 'rightArm', 'arm', 'rightShoulder'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 800 },
-             { bones: ['rightLowerArm', 'J_Bip_R_LowerArm', 'rightForeArm', 'forearm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 800 }
+             { bones: ['J_Bip_R_UpperArm'], rotation: { x: 0, y: -0.5, z: 0.3 }, tiempo: 0 },
+             { bones: ['J_Bip_R_LowerArm'], rotation: { x: -0.5, y: 0, z: 0 }, tiempo: 100 },
+             { bones: ['J_Bip_R_UpperArm'], rotation: { x: 0, y: 0.5, z: -0.2 }, tiempo: 400 },
+             { bones: ['J_Bip_R_UpperArm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 800 },
+             { bones: ['J_Bip_R_LowerArm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 800 }
            ]
        },
        'enfado': {
            duracion: 600,
            secuencia: [
              { bones: ['spine', 'chest'], rotation: { x: 0.1, y: 0, z: 0 }, tiempo: 0 },
-             { bones: ['rightUpperArm', 'J_Bip_R_UpperArm', 'rightArm', 'arm'], rotation: { x: -0.6, y: 0.2, z: 0.1 }, tiempo: 0 },
-             { bones: ['rightLowerArm', 'J_Bip_R_LowerArm', 'rightForeArm', 'forearm'], rotation: { x: -0.8, y: 0, z: 0 }, tiempo: 100 },
+             { bones: ['J_Bip_R_UpperArm'], rotation: { x: -0.6, y: 0.2, z: 0.1 }, tiempo: 0 },
+             { bones: ['J_Bip_R_LowerArm'], rotation: { x: -0.8, y: 0, z: 0 }, tiempo: 100 },
              { bones: ['spine', 'chest'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 600 },
-             { bones: ['rightUpperArm', 'J_Bip_R_UpperArm', 'rightArm', 'arm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 600 },
-             { bones: ['rightLowerArm', 'J_Bip_R_LowerArm', 'rightForeArm', 'forearm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 600 }
+             { bones: ['J_Bip_R_UpperArm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 600 },
+             { bones: ['J_Bip_R_LowerArm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 600 }
            ]
        },
        'afirmacion': {
@@ -563,12 +563,12 @@
            duracion: 1000,
            secuencia: [
                { bones: ['spine', 'chest'], rotation: { x: 0.05, y: 0, z: 0.05 }, tiempo: 0 },
-               { bones: ['rightUpperArm', 'J_Bip_R_UpperArm', 'rightArm'], rotation: { x: -0.3, y: 0.2, z: 0.1 }, tiempo: 0 },
-               { bones: ['leftUpperArm', 'leftArm'], rotation: { x: -0.3, y: -0.2, z: -0.1 }, tiempo: 0 },
+               { bones: ['J_Bip_R_UpperArm'], rotation: { x: -0.3, y: 0.2, z: 0.1 }, tiempo: 0 },
+               { bones: ['J_Bip_L_UpperArm'], rotation: { x: -0.3, y: -0.2, z: -0.1 }, tiempo: 0 },
                { bones: ['spine', 'chest'], rotation: { x: -0.03, y: 0, z: -0.03 }, tiempo: 500 },
                { bones: ['spine', 'chest'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 1000 },
-               { bones: ['rightUpperArm', 'J_Bip_R_UpperArm', 'rightArm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 1000 },
-               { bones: ['leftUpperArm', 'leftArm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 1000 }
+               { bones: ['J_Bip_R_UpperArm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 1000 },
+               { bones: ['J_Bip_L_UpperArm'], rotation: { x: 0, y: 0, z: 0 }, tiempo: 1000 }
            ]
        }
     };
@@ -634,18 +634,16 @@
        if (gestureInterval) clearInterval(gestureInterval);
 
        gestureInterval = setInterval(() => {
-           if (!vrm || currentGesture) return;
+          if (!vrm || currentGesture) return;
 
-           const gestosDisponibles = ['saludo', 'afirmacion', 'negacion'];
-           // A veces enfado (30% de probabilidad si está sola)
-           if (Math.random() < 0.3 && !window.userSpeaking) {
-               gestosDisponibles.push('enfado');
-           }
-
-           const gestoAleatorio = gestosDisponibles[Math.floor(Math.random() * gestosDisponibles.length)];
-           ejecutarGesto(vrm, gestoAleatorio);
-
-       }, 10000); // Cada 10 segundos
+          const gestosDisponibles = ['saludo', 'afirmacion', 'negacion'];
+          // A veces enfado (30% de probabilidad si está sola)
+          if (Math.random() < 0.3 && !window.userSpeaking) {
+              gestosDisponibles.push('enfado');
+          }
+          const gestoAleatorio = gestosDisponibles[Math.floor(Math.random() * gestosDisponibles.length)];
+          ejecutarGesto(vrm, gestoAleatorio);
+       }, 10000); //cada 10 segundos
     }
 
     // --- Configuración 3D ---
@@ -686,8 +684,8 @@
       console.log('✅ Avatar cargado');
 
       iniciarGestosSuaves(vrmModel);
-
       if (vrmModel.lookAt) vrmModel.lookAt.target = camera;
+
     }, undefined, (error) => console.error('Error:', error));
 
     // Animación
@@ -749,16 +747,14 @@
         chatDiv.appendChild(botMsgDiv);
         chatDiv.scrollTop = chatDiv.scrollHeight;
 
-        // 🎭 **Añadir GESTO según RESPUESTA**
+        // Añadir GESTO según RESPUESTA
         if (vrmModel) {
-          gestualizarRespuesta(data.respuesta, vrmModel);
+           gestualizarRespuesta(data.respuesta, vrmModel);
+           //iniciarGestosAleatorios(vrmModel)
         }
         window.userSpeaking = false;
-        //if (vrmModel) {
-        //  iniciarGestosAleatorios(vrmModel)
-        //}
 
-      } catch (error) {
+      }catch (error) {
          console.error('Error al conectar con el servidor:', error);
          chatDiv.removeChild(typingDiv);
          const errorDiv = document.createElement('div');
